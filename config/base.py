@@ -91,10 +91,10 @@ CORS_ALLOW_HEADERS = (
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%Y-%m-%dT%H:%M:%SZ",
     'DEFAULT_AUTHENTICATION_CLASSES': (
-         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -115,7 +115,6 @@ SWAGGER_SETTINGS = {
 FIXTURE_DIRS = (
     'fixtures/',
 )
-
 
 DEFAULT_LANG = "ro"
 LANGUAGES = [
@@ -152,7 +151,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 DATE_FORMAT = "%Y-%m-%d %H:%m"
 ADMIN_EMAILS = ['admin@godina.md']
 
@@ -163,6 +161,5 @@ NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=' + ','.join([app + '.views' for app in INSTALLED_APPS if app.startswith('apps.')]),
 ]
-
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
