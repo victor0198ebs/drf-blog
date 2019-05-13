@@ -22,6 +22,9 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'enabled')
 
 
-class Comment(models.Manager):
+class Comment(models.Model):
     text = models.CharField(max_length=200)
+    date_written = models.DateField(auto_now_add=True)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+
+

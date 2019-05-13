@@ -59,11 +59,41 @@ class AddBlogView(GenericAPIView):
         return Response(BlogSerializer(blog).data)
 
 
-# class CommentListView(GenericAPIView):
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-#
-#     def list(self, request):
-#         queryset = self.Comment.objects.all()
-#         serializer = CommentSerializer(self.get_queryset(), many=True)
-#         return Response(serializer.data)
+class CommentListView(GenericAPIView):
+    serializer_class = CommentSerializer
+
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+
+    def get(self, request):
+        comments = Comment.objects.all()
+
+        return Response(CommentSerializer(comments, many=True).data)
+
+
+class AddCommentView(GenericAPIView):
+    serializer_class = CommentSerializer
+
+    @serialize_decorator(CommentSerializer)
+    def post(self, request):
+        validated_data = request.serializer.validated_data
+
+        comment = Comment.objects.create(
+            text=validated_data['text'],
+            blog=validated_data['blog'],
+        )
+        comment.save()
+
+        return Response(CommentSerializer(comment).data)
+
+
+class CommentItemView(GenericAPIView):
+    serializer_class = CommentSerializer
+
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment.objects.filter(pk=pk))
+
+        return Response(CommentSerializer(comment).data)
