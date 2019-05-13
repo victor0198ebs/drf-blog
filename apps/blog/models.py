@@ -17,13 +17,11 @@ class Blog(models.Model):
     enabled = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def __str__(self):
-        out = str(self.title) + " -> " + str(self.enabled)
-        return out
-
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'enabled')
 
 
-admin.site.register(Blog, BlogAdmin)
+class Comment(models.Manager):
+    text = models.CharField(max_length=200)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)

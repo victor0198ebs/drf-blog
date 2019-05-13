@@ -11,7 +11,3 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("first_name", "last_name", "username", "password",)
 
 
-class BlogSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Blog
-        fields = ("title", "slug", "body", "posted", "enabled", "category")
