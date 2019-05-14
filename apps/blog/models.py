@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib import admin
 
 
-# Create your models here.
-
 class Category(models.Model):
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, db_index=True)
