@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-
 from apps.blog.models import Category, Blog, Comment
 from apps.blog.serializers import CategorySerializer, BlogSerializer, CommentSerializer
 
@@ -26,15 +25,16 @@ class BlogListView(GenericAPIView):
 
 
 class BlogItemView(GenericAPIView):
-    serializer_class = BlogSerializer
+    serializer_class = BlogSerializer, CommentSerializer
 
     permission_classes = (AllowAny,)
     authentication_classes = ()
 
     def get(self, request, pk):
         blog = get_object_or_404(Blog.objects.filter(pk=pk))
+        comments = Comment.objects.filter(blog=blog.id)
 
-        return Response(BlogSerializer(blog).data)
+        return Response((BlogSerializer(blog).data, CommentSerializer(comments, many=True).data))
 
 
 class AddBlogView(GenericAPIView):
@@ -73,6 +73,9 @@ class CommentListView(GenericAPIView):
 
 class AddCommentView(GenericAPIView):
     serializer_class = CommentSerializer
+
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
 
     @serialize_decorator(CommentSerializer)
     def post(self, request):

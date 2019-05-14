@@ -25,6 +25,4 @@ class BlogAdmin(admin.ModelAdmin):
 class Comment(models.Model):
     text = models.CharField(max_length=200)
     date_written = models.DateField(auto_now_add=True)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-
-
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
